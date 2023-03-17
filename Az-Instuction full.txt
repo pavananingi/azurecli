@@ -1,0 +1,65 @@
+Create Resource group:::::
+az group create --name ResourceGroupName --location eastus
+_______________________________________________________________________________________________________
+Delete resource groups:::::
+az group delete --name exampleGroup
+_______________________________________________________________________________________________________
+Create a virtual network with a specific address prefix and one subnet:::::
+az network vnet create -g ResourceGroupName -n VnetName --address-prefix 10.0.0.0/16 \
+--subnet-name SubnetName --subnet-prefixes 10.0.0.0/24
+_______________________________________________________________________________________________________
+Create subnet on existing v-net:::::
+az network vnet subnet create -g RG name --vnet-name V-net name -n app-Snet01 \
+--address-prefixes 10.1.2.0/24
+_______________________________________________________________________________________________________
+Delete a virtual network:::::
+az network vnet delete -g ResourceGroupName -n myVNet
+_______________________________________________________________________________________________________
+Create Virtual machine ubuntu using UID & password::::::
+az vm create --resource-group VMResourceGroup --name ubuntuVM 
+--image Canonical:0001-com-ubuntu-server-impish:21_10-gen2:21.10.202202010 --size Standard_B1s 
+--os-disk-size-gb 64 --public-ip-sku Basic --admin-username xman --admin-password 'mypassword*1'
+_______________________________________________________________________________________________________
+Create NSG::::::
+az networknsg create -g resource group name -n nsg name
+_______________________________________________________________________________________________________
+Create VM on existing vnet,subnet,NSG:::::::
+az vm create --resource-group "RG name" --name "VM name" --image "UbuntuLTS" \
+  --vnet-name V-net name --subnet subnet name \
+  --admin-username "User name" \
+  --admin-password "Password"  --size standard_B1ls --nsg "NSG name"
+_______________________________________________________________________________________________________
+Delete VM::::::
+az vm delete \
+    --resource-group myResourceGroup \
+    --name myVM \
+    --force-deletion none
+_______________________________________________________________________________________________________
+Create Load Balencer
+az network lb create \
+    --resource-group CreatePubLBQS-rg \
+    --name myLoadBalancer \
+    --sku Standard \
+    --public-ip-address myPublicIP \
+    --frontend-ip-name myFrontEnd \
+    --backend-pool-name myBackEndPool
+az network lb probe create \
+    --resource-group CreatePubLBQS-rg \
+    --lb-name myLoadBalancer \
+    --name myHealthProbe \
+    --protocol tcp \
+    --port 80
+az network lb rule create \
+    --resource-group CreatePubLBQS-rg \
+    --lb-name myLoadBalancer \
+    --name myHTTPRule \
+    --protocol tcp \
+    --frontend-port 80 \
+    --backend-port 80 \
+    --frontend-ip-name myFrontEnd \
+    --backend-pool-name myBackEndPool \
+    --probe-name myHealthProbe \
+    --disable-outbound-snat true \
+    --idle-timeout 15 \
+    --enable-tcp-reset true
+
